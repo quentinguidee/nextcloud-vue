@@ -690,14 +690,14 @@ export default {
 		}
 
 		&--online{
-			background-image: url('../../assets/status-icons/user-status-online.svg');
+			background-image: url('./user-status-online.svg');
 		}
 		&--dnd{
-			background-image: url('../../assets/status-icons/user-status-dnd.svg');
+			background-image: url('./user-status-dnd.svg');
 			background-color: #ffffff;
 		}
 		&--away{
-			background-image: url('../../assets/status-icons/user-status-away.svg');
+			background-image: url('./user-status-away.svg');
 		}
 		&--icon {
 			border: none;

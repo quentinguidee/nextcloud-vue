@@ -110,17 +110,18 @@ module.exports = {
 					{
 						loader: 'sass-loader',
 						options: {
-							additionalData: `@use 'sass:math'; $scope_version:${SCOPE_VERSION}; @import 'variables'; @import 'material-icons';`,
-							/**
-							 * ! needed for resolve-url-loader
-							 */
-							sourceMap: true,
-							sassOptions: {
-								sourceMapContents: false,
-								includePaths: [
-									path.resolve(__dirname, './src/assets'),
-								],
-							},
+							additionalData: `
+								$scope_version:${SCOPE_VERSION};
+								@use 'sass:math';`,
+						},
+					},
+					{
+						loader: 'sass-resources-loader',
+						options: {
+							resources: [
+								path.join(__dirname, 'src/assets/variables.scss'),
+								path.join(__dirname, 'src/assets/material-icons.css'),
+							],
 						},
 					},
 				],

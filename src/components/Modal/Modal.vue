@@ -574,7 +574,7 @@ $header-size: 50px;
 	}
 
 	// On wider screens the title can be centered
-	@media only screen and (min-width: $breakpoint-mobile/2) {
+	@media only screen and (min-width: math.div($breakpoint-mobile, 2)) {
 		.modal-title {
 			padding-left: #{$clickable-area * 3}; // maximum actions is 3
 			text-align: center;
@@ -593,7 +593,7 @@ $header-size: 50px;
 			align-items: center;
 			justify-content: center;
 			box-sizing: border-box;
-			margin: ($header-size - $clickable-area) / 2;
+			margin: math.div($header-size - $clickable-area, 2);
 			padding: 0;
 		}
 
@@ -611,7 +611,7 @@ $header-size: 50px;
 				.play-pause-icons__play,
 				.play-pause-icons__pause {
 					opacity: $opacity_full;
-					border-radius: $clickable-area / 2;
+					border-radius: math.div($clickable-area, 2);
 					background-color: $icon-focus-bg;
 				}
 			}
@@ -620,14 +620,14 @@ $header-size: 50px;
 				box-sizing: border-box;
 				width: $clickable-area;
 				height: $clickable-area;
-				margin: ($header-size - $clickable-area) / 2;
+				margin: math.div($header-size - $clickable-area, 2);
 				cursor: pointer;
 				opacity: $opacity_normal;
 			}
 		}
 
 		.header-actions {
-			margin: ($header-size - $clickable-area) / 2;
+			margin: math.div($header-size - $clickable-area, 2);
 			color: white;
 		}
 

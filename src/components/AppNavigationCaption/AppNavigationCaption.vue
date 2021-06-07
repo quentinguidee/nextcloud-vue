@@ -58,7 +58,7 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row-reverse;
-	padding: 0 8px 0 $clickable-area/2;
+	padding: 0 8px 0 math.div($clickable-area, 2);
 
 	&__title {
 		font-weight: bold;
@@ -80,6 +80,6 @@ export default {
 
 // extra top space if it's not the first item on the list
 .app-navigation-caption:not(:first-child) {
-	margin-top: $clickable-area / 2;
+	margin-top: math.div($clickable-area, 2);
 }
 </style>

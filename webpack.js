@@ -1,4 +1,5 @@
 const webpackConfig = require('@nextcloud/webpack-vue-config')
+const webpackRules = require('@nextcloud/webpack-vue-config/rules')
 
 const fs = require('fs')
 const gettextParser = require('gettext-parser')
@@ -7,7 +8,6 @@ const md5 = require('md5')
 const path = require('path')
 
 const { DefinePlugin } = require('webpack')
-const BabelLoaderExcludeNodeModulesExcept = require('babel-loader-exclude-node-modules-except')
 const nodeExternals = require('webpack-node-externals')
 
 // scope variable
@@ -104,55 +104,34 @@ webpackConfig.resolve.alias = {
 	'/core/css/../img': path.join(__dirname, 'styleguide/assets/img'),
 	'/core/css/../fonts': path.join(__dirname, 'styleguide/assets/fonts'),
 }
-webpackConfig.module.rules = [
-	{
-		test: /\.css$/,
-		use: ['style-loader', 'css-loader', 'resolve-url-loader'],
-	},
-	{
-		test: /\.scss$/,
-		use: [
-			'style-loader',
-			'css-loader',
-			'resolve-url-loader',
-			{
-				loader: 'sass-loader',
-				options: {
-					additionalData: `$scope_version:${SCOPE_VERSION}; @import 'variables'; @import 'material-icons';`,
-					/**
-					 * ! needed for resolve-url-loader
-					 */
-					sourceMap: true,
-					sassOptions: {
-						sourceMapContents: false,
-						includePaths: [
-							path.resolve(__dirname, './src/assets'),
-						],
-					},
+webpackRules.RULE_CSS = {
+	test: /\.css$/,
+	use: ['style-loader', 'css-loader', 'resolve-url-loader'],
+}
+webpackRules.RULE_SCSS = {
+	test: /\.scss$/,
+	use: [
+		'style-loader',
+		'css-loader',
+		'resolve-url-loader',
+		{
+			loader: 'sass-loader',
+			options: {
+				additionalData: `$scope_version:${SCOPE_VERSION}; @import 'variables'; @import 'material-icons';`,
+				/**
+				 * ! needed for resolve-url-loader
+				 */
+				sourceMap: true,
+				sassOptions: {
+					sourceMapContents: false,
+					includePaths: [
+						path.resolve(__dirname, './src/assets'),
+					],
 				},
 			},
-		],
-	},
-	{
-		test: /\.(js|vue)$/,
-		use: 'eslint-loader',
-		enforce: 'pre',
-	},
-	{
-		test: /\.vue$/,
-		loader: 'vue-loader',
-	},
-	{
-		test: /\.js$/,
-		loader: 'babel-loader',
-		exclude: BabelLoaderExcludeNodeModulesExcept([
-			'tributejs',
-		]),
-	},
-	{
-		test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/i,
-		loader: 'url-loader',
-	},
-]
+		},
+	],
+}
+webpackConfig.module.rules = Object.values(webpackRules)
 
 module.exports = webpackConfig

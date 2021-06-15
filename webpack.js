@@ -1,11 +1,10 @@
 const webpackConfig = require('@nextcloud/webpack-vue-config')
 const webpackRules = require('@nextcloud/webpack-vue-config/rules')
 
-const fs = require('fs')
-const gettextParser = require('gettext-parser')
 const glob = require('glob')
 const md5 = require('md5')
 const path = require('path')
+const translations = require('./build/translations')
 
 const { DefinePlugin } = require('webpack')
 const nodeExternals = require('webpack-node-externals')
@@ -17,42 +16,6 @@ const versionHash = md5(appVersion).substr(0, 7)
 const SCOPE_VERSION = JSON.stringify(versionHash)
 
 console.info('This build version hash is', versionHash, '\n')
-
-// https://github.com/alexanderwallin/node-gettext#usage
-// https://github.com/alexanderwallin/node-gettext#load-and-add-translations-from-mo-or-po-files
-const translations = fs
-	.readdirSync('./l10n')
-	.filter(name => name !== 'messages.pot' && name.endsWith('.pot'))
-	.map(file => {
-		const path = './l10n/' + file
-		const locale = file.substr(0, file.length - '.pot'.length)
-
-		const po = fs.readFileSync(path)
-		const json = gettextParser.po.parse(po)
-
-		// Compress translations Content
-		const translations = {}
-		for (const key in json.translations['']) {
-			if (key !== '') {
-				// Plural
-				if ('msgid_plural'in json.translations[''][key]) {
-					translations[json.translations[''][key].msgid] = {
-						pluralId: json.translations[''][key].msgid_plural,
-						msgstr: json.translations[''][key].msgstr,
-					}
-					continue
-				}
-
-				// Singular
-				translations[json.translations[''][key].msgid] = json.translations[''][key].msgstr[0]
-			}
-		}
-
-		return {
-			locale,
-			translations,
-		}
-	})
 
 webpackConfig.entry = {
 	ncvuecomponents: path.join(__dirname, 'src', 'index.js'),

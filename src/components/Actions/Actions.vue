@@ -37,9 +37,9 @@ https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-action
 
 ```
 <Actions>
-	<ActionButton icon="icon-edit" @click="alert('Edit')">Edit</ActionButton>
+	<ActionButton icon="icon-rename" @click="alert('Edit')">Edit</ActionButton>
+	<ActionLink icon="icon-external" href="https://nextcloud.com">Link</ActionLink>
 	<ActionButton icon="icon-delete" @click="alert('Delete')">Delete</ActionButton>
-	<ActionLink icon="icon-external" title="Link" href="https://nextcloud.com" />
 </Actions>
 ```
 
@@ -47,9 +47,8 @@ https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-action
 
 ```
 <Actions default-icon="icon-edit">
-	<ActionButton icon="icon-edit" @click="alert('Edit')">Edit</ActionButton>
-	<ActionButton icon="icon-delete" @click="alert('Delete')">Delete</ActionButton>
-	<ActionLink icon="icon-external" title="Link" href="https://nextcloud.com" />
+	<ActionButton icon="icon-rename" @click="alert('Edit')">Edit</ActionButton>
+	<ActionLink icon="icon-external" href="https://nextcloud.com">Link</ActionLink>
 </Actions>
 ```
 
@@ -57,27 +56,27 @@ https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-action
 
 ```
 <Actions default-icon="icon-edit" menu-title="Object management">
-	<ActionButton icon="icon-edit">Rename</ActionButton>
-	<ActionButton icon="icon-delete">Delete</ActionButton>
+	<ActionButton icon="icon-rename">Rename</ActionButton>
 	<ActionButton icon="icon-confirm">Validate</ActionButton>
 	<ActionButton icon="icon-download">Download</ActionButton>
+	<ActionButton icon="icon-delete" @click="alert('Delete')">Delete</ActionButton>
 </Actions>
 ```
 
 ### Various icons styles
 ```
 <Actions :primary="true">
-	<ActionButton icon="icon-edit">Edit</ActionButton>
+	<ActionButton icon="icon-rename">Edit</ActionButton>
 	<ActionButton icon="icon-delete">Delete</ActionButton>
 </Actions>
 ```
 
 ```
 <Actions default-icon="icon-add-white" :primary="true" menu-title="Object management">
-	<ActionButton icon="icon-edit">Rename</ActionButton>
-	<ActionButton icon="icon-delete">Delete</ActionButton>
+	<ActionButton icon="icon-rename">Rename</ActionButton>
 	<ActionButton icon="icon-confirm">Validate</ActionButton>
 	<ActionButton icon="icon-download">Download</ActionButton>
+	<ActionButton icon="icon-delete">Delete</ActionButton>
 </Actions>
 ```
 
@@ -86,23 +85,13 @@ To be used with `vue-material-design-icons` only. For icon classes use the `defa
 It can be used with one or multiple actions.
 ```
 <template>
-	<div style="display: flex;align-items: center;">
-		<button @click="toggled = !toggled">Toggle multiple action</button>
-		<Actions>
-			<template #icon>
-				<DotsHorizontalCircleOutline :size="20" decorative />
-			</template>
-			<ActionButton>
-				<template #icon>
-					<MicrophoneOff :size="20" decorative />
-				</template>
-				Mute
-			</ActionButton>
-			<ActionButton v-if="toggled" icon="icon-delete">Delete</ActionButton>
-		</Actions>
-		<Actions>
-		</Actions>
-	</div>
+	<Actions><template #icon><DotsHorizontalCircleOutline :size="20" decorative /></template>
+		<ActionButton>
+			<template #icon><MicrophoneOff :size="20" decorative /></template>
+			Mute
+		</ActionButton>
+		<ActionButton icon="icon-delete">Delete</ActionButton>
+	</Actions>
 </template>
 <script>
 import DotsHorizontalCircleOutline from 'vue-material-design-icons/DotsHorizontalCircleOutline'
@@ -112,11 +101,6 @@ export default {
 	components: {
 		DotsHorizontalCircleOutline,
 		MicrophoneOff,
-	},
-	data() {
-		return {
-			toggled: false
-		}
 	}
 }
 </script>
@@ -124,10 +108,11 @@ export default {
 
 ### Custom icon slot in child elements
 ```
-<Actions :primary="true">
+<Actions>
 	<ActionButton><template #icon><MagnifyIcon /></template>Search</ActionButton>
 	<ActionButton icon="icon-delete">Delete</ActionButton>
 </Actions>
+
 ```
 
 </docs>

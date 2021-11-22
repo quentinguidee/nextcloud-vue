@@ -95,7 +95,7 @@
 		<template #trigger>
 			<slot />
 		</template>
-		<StaticPicker
+		<Picker
 			:auto-focus="true"
 			color="var(--color-primary)"
 			:data="emojiIndex"
@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { StaticPicker, EmojiIndex } from 'emoji-mart-vue-fast'
+import { Picker, EmojiIndex } from 'emoji-mart-vue-fast'
 import data from 'emoji-mart-vue-fast/data/all.json'
 import Popover from '../Popover'
 import { t } from '../../l10n'
@@ -121,7 +121,7 @@ import { t } from '../../l10n'
 export default {
 	name: 'EmojiPicker',
 	components: {
-		StaticPicker,
+		Picker,
 		Popover,
 	},
 	props: {

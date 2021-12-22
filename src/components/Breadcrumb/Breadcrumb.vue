@@ -31,7 +31,11 @@ This component is meant to be used inside a Breadcrumbs component.
 <template>
 	<div ref="crumb"
 		class="vue-crumb"
-		:class="{'vue-crumb--with-action': $slots.default, 'vue-crumb--hovered': hovering}"
+		:class="{
+			'vue-crumb--with-action': $slots.default,
+			'vue-crumb--only-action': (!($slots.icon || icon || title)),
+			'vue-crumb--hovered': hovering
+		}"
 		:[crumbId]="''"
 		draggable="false"
 		@dragstart.prevent="() => {/** Prevent the breadcrumb from being draggable. */}"
@@ -39,29 +43,31 @@ This component is meant to be used inside a Breadcrumbs component.
 		@dragover.prevent="() => {}"
 		@dragenter="dragEnter"
 		@dragleave="dragLeave">
-		<element
-			:is="tag"
-			v-if="title || icon"
-			:to="to"
-			:href="href">
-			<!-- @slot Slot for passing a material design icon. Precedes the icon and title prop. -->
-			<slot name="icon">
-				<span v-if="icon" :class="icon" class="icon" />
-				<span v-else>{{ title }}</span>
-			</slot>
-		</element>
-		<Actions ref="actions"
-			:force-menu="forceMenu"
-			:open="open"
-			:container="`.vue-crumb--with-action[${crumbId}]`"
-			@update:open="onOpenChange">
-			<template #icon>
-				<!-- @slot Slot for the custom menu icon -->
-				<slot name="menu-icon" />
-			</template>
-			<!-- @slot All action elements passed into the default slot will be used -->
-			<slot />
-		</Actions>
+		<div>
+			<element
+				:is="tag"
+				v-if="title || icon"
+				:to="to"
+				:href="href">
+				<!-- @slot Slot for passing a material design icon. Precedes the icon and title prop. -->
+				<slot name="icon">
+					<span v-if="icon" :class="icon" class="icon" />
+					<span v-else>{{ title }}</span>
+				</slot>
+			</element>
+			<Actions ref="actions"
+				:force-menu="forceMenu"
+				:open="open"
+				:container="`.vue-crumb--with-action[${crumbId}]`"
+				@update:open="onOpenChange">
+				<template #icon>
+					<!-- @slot Slot for the custom menu icon -->
+					<slot name="menu-icon" />
+				</template>
+				<!-- @slot All action elements passed into the default slot will be used -->
+				<slot />
+			</Actions>
+		</div>
 		<ChevronRight class="vue-crumb__separator" :size="20" />
 	</div>
 </template>
@@ -239,10 +245,8 @@ export default {
 
 	&:last-child {
 		max-width: 210px;
+		font-weight: bold;
 
-		a {
-			flex-shrink: 1;
-		}
 		// Don't show breadcrumb separator for last crumb
 		.vue-crumb__separator {
 			display: none;
@@ -253,8 +257,17 @@ export default {
 		display: none;
 	}
 
-	&--with-action a {
-		padding-right: 2px;
+	&#{&}--with-action > div {
+		padding-right: 0;
+	}
+
+	&#{&}--only-action > div {
+		padding: 0;
+	}
+
+	&#{&}--hovered > div {
+		background-color: var(--color-background-dark);
+		opacity: .7;
 	}
 
 	&__separator {
@@ -262,21 +275,19 @@ export default {
 		opacity: .7;
 	}
 
-	&#{&}--hovered > a {
-		background-color: var(--color-background-dark);
-		opacity: .7;
-	}
-
-	> a {
+	> div {
 		&:hover,
-		&:focus {
+		&:focus-within {
 			background-color: var(--color-background-dark);
 		}
-		&:focus{
+		&:focus-within {
 			opacity: 1;
 		}
 		&:hover {
 			opacity: .7;
+		}
+		> a {
+			overflow: hidden;
 		}
 		opacity: .5;
 		padding: 12px;
@@ -284,6 +295,7 @@ export default {
 		border-radius: var(--border-radius-pill);
 	}
 
+	> div,
 	a {
 		align-items: center;
 		display: inline-flex;

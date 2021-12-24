@@ -118,9 +118,10 @@ $arrow-width: 10px;
 	filter: drop-shadow(0 1px 10px var(--color-box-shadow));
 
 	&__inner {
-		padding: 0;
+		padding: var(--border-radius-large) 0;
 		color: var(--color-main-text);
-		border-radius: var(--border-radius);
+		border-radius: var(--border-radius-large);
+		overflow: hidden;
 		background: var(--color-main-background);
 	}
 

@@ -296,16 +296,4 @@ $input-margin: 4px;
 	}
 }
 
-// if a form is the last of the list
-// add the same bottomMargin as the right padding
-// for visual balance
-li:last-child > .action-text-editable {
-	margin-bottom: $icon-margin - $input-margin;
-}
-
-// same for first item
-li:first-child > .action-text-editable {
-	margin-top: $icon-margin - $input-margin;
-}
-
 </style>
